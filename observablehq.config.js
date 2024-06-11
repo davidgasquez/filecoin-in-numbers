@@ -2,9 +2,8 @@
 export default {
   title: "Filecoin Metrics",
   root: "src",
-  theme: ["glacier", "dashboard"], // try "light", "dark", "slate", etc.
+  theme: ["glacier", "dashboard"],
   head: '<link rel="icon" href="logo.svg" type="image/svg" sizes="32x32">',
-  header: false, // what to show in the header (HTML)
   footer: false, // what to show in the footer (HTML)
   sidebar: false, // whether to show the sidebar
   toc: false, // whether to show the table of contents
