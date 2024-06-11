@@ -77,3 +77,5 @@ function linePlot(width, data, x, y) {
   </div>
 
 </div>
+
+<a href="/"> <img src="logo.svg" width="20px"> </a>

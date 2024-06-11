@@ -28,3 +28,5 @@ where provider_id = ${id}
   <div class="card"> <h3> Raw Power </h3> ${sp.raw_power_pibs.toFixed(2)} PiBs </div>
   <div class="card"> <h3> Quality Adjusted Power </h3> ${sp.quality_adjusted_power_pibs.toFixed(2)} PiBs </div>
 </div>
+
+<a href="/"> <img src="logo.svg" width="20px"> </a>
