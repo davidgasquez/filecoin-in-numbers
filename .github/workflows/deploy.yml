@@ -1,7 +1,8 @@
 name: Build and Deploy
 
 on:
-  push: {branches: [main]}
+  push:
+    branches: [$default-branch]
   workflow_dispatch: {}
 
 permissions:
@@ -21,7 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
