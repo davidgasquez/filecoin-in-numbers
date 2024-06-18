@@ -8,7 +8,7 @@ sql:
 const id = (new URL(document.location).searchParams.get("id") ?? null);
 ```
 
-# ${id ?? "Storage Providers"}
+# ${id ?? "No Provider Selected"}
 
 ```sql id=[sp]
 select
