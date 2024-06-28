@@ -7,6 +7,10 @@ sql:
 
 _A view into Filecoin Metrics. Powered by the [Filecoin Data Portal](https://github.com/davidgasquez/filecoin-data-portal/)._
 
+```js
+import {linePlot} from "./components/linePlot.js";
+```
+
 ```sql id=m
 select
   date,
@@ -20,28 +24,6 @@ select
   raw_power_pibs,
   quality_adjusted_power_pibs,
 from metrics
-```
-
-```js
-function linePlot(width, data, x, y) {
-  return Plot.plot({
-    width: width,
-    x: {tickFormat: d3.utcFormat("%Y"),  label: "Date"},
-    y: {grid: true},
-    marks: [
-      Plot.lineY(data, {
-        x: x,
-        y: y,
-        tip: {
-          format: {
-            x: d => d3.utcFormat("%Y-%m-%d")(d),
-            y: d => d.toFixed(2)
-          }
-        }
-        }),
-    ],
-  });
-}
 ```
 
 <div class="grid grid-cols-2">
