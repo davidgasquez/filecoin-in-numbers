@@ -7,6 +7,10 @@ sql:
 
 _A view into Filecoin Metrics. Powered by the [Filecoin Data Portal](https://github.com/davidgasquez/filecoin-data-portal/)._
 
+```js
+import {linePlot} from "./components/linePlot.js";
+```
+
 ```sql id=m
 select
   date,
@@ -20,55 +24,6 @@ select
   raw_power_pibs,
   quality_adjusted_power_pibs,
 from metrics
-```
-
-```js
-  Plot.plot({
-    width: width,
-    x: {tickFormat: d3.utcFormat("%Y"),  label: "Date"},
-    y: {grid: true, label: "Average Onboarded PiBs"},
-    marks: [
-      Plot.lineY(m, {
-        x: "date",
-        y: "onboarded_data_pibs",
-        stroke: "var(--theme-foreground-fainter)",
-        }),
-      Plot.lineY(m, {
-        x: "date",
-        y: "onboarded_data_pibs_30d_avg",
-        stroke: "var(--theme-foreground-focus)",
-        strokeWidth: 2,
-        tip: {
-          format: {
-            x: d => d3.utcFormat("%Y-%m-%d")(d),
-            y: d => d.toFixed(2)
-          }
-        }
-        }),
-    ],
-  })
-```
-
-```js
-function linePlot(width, data, x, y) {
-  return Plot.plot({
-    width: width,
-    x: {tickFormat: d3.utcFormat("%Y"),  label: "Date"},
-    y: {grid: true},
-    marks: [
-      Plot.lineY(data, {
-        x: x,
-        y: y,
-        tip: {
-          format: {
-            x: d => d3.utcFormat("%Y-%m-%d")(d),
-            y: d => d.toFixed(2)
-          }
-        }
-        }),
-    ],
-  });
-}
 ```
 
 <div class="grid grid-cols-2">
