@@ -3,7 +3,6 @@ sql:
   storage_providers: ./data/storage_providers.parquet
 ---
 
-
 # Storage Providers
 
 ```sql id=sps
@@ -25,8 +24,16 @@ const searchResults = view(Inputs.search(sps, {
 }))
 ```
 
+<div class="card">
+
 ```js
-Inputs.table(searchResults)
+Inputs.table(searchResults, {
+  format: {
+    provider_id: id => htl.html`<a href=/provider?id=${id} target=_blank>${id}</a>`
+  },
+  layout: "auto",
+  rows: 30,
+})
 ```
 
-<a href="/"> <img src="logo.svg" width="20px"> </a>
+</div>

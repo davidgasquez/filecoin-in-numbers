@@ -1,4 +1,5 @@
 ---
+title: Provider
 sql:
   storage_providers: ./data/storage_providers.parquet
   storage_providers_daily_deals_metrics: ./data/storage_providers_daily_deals_metrics.parquet
@@ -107,5 +108,3 @@ Plot.plot({
 })
 )}
 </div>
-
-<a href="/"> <img src="logo.svg" width="20px"> </a>
