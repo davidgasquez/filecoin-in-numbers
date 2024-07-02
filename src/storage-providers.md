@@ -29,7 +29,7 @@ const searchResults = view(Inputs.search(sps, {
 ```js
 Inputs.table(searchResults, {
   format: {
-    provider_id: id => htl.html`<a href=/provider?id=${id} target=_blank>${id}</a>`
+    provider_id: id => htl.html`<a href=/filecoin-metrics/provider?id=${id} target=_blank>${id}</a>`
   },
   layout: "auto",
   rows: 30,
