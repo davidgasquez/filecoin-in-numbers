@@ -1,6 +1,6 @@
 import * as Plot from "npm:@observablehq/plot";
 
-export function linePlot(width, data, x, y, yLabel, title) {
+export function linePlot(width, data, x, y, yLabel, title, interval = "day") {
     return Plot.plot({
         title: title,
         x: { label: "Date" },
@@ -12,7 +12,7 @@ export function linePlot(width, data, x, y, yLabel, title) {
                 data, {
                 x: x,
                 y: y,
-                interval: "day",
+                interval: interval,
                 stroke: "var(--theme-foreground-focus)",
                 tip: true,
                 curve: "basis",
