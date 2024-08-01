@@ -15,7 +15,7 @@
     "d3-time-format": "^4.1.0"
   },
   "devDependencies": {
-    "rimraf": "^5.0.8"
+    "rimraf": "^6.0.1"
   },
   "engines": {
     "node": ">=18"

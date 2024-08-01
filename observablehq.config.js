@@ -37,7 +37,7 @@ export default {
   }
 
   </style>
-  <div style="display: flex; align-items: center; height: 2.2rem; margin: -1.5rem -2rem 2rem -2rem; padding: 0.5rem 2rem; border-bottom: solid 1px var(--theme-foreground-faintest); font: 400 16px var(--sans-serif);">
+  <div style="display: flex; align-items: center; height: 1.8rem; margin: -1.5rem -2rem 2rem -2rem; padding: 0.5rem 2rem; border-bottom: solid 1px var(--theme-foreground-faintest); font: 400 16px var(--sans-serif);">
     <div style="display: flex; flex-grow: 1; justify-content: space-between; align-items: center;">
       <b>
         <a href="" target="_self" rel="">
