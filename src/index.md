@@ -1,135 +1,365 @@
 ---
-sql:
-  metrics: ./data/metrics.parquet
+toc: false
 ---
 
-# Filecoin Metrics
+<style>
 
-_A view into Filecoin Metrics. Powered by the [Filecoin Data Portal](https://github.com/davidgasquez/filecoin-data-portal/)._
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--sans-serif);
+  margin: 2rem 0 6rem;
+  text-wrap: balance;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 1rem 0;
+  max-width: none;
+  font-size: 12vw;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(30deg, var(--theme-foreground-focus), currentColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero h2 {
+  margin: 0;
+  max-width: 34em;
+  font-size: 20px;
+  font-style: initial;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--theme-foreground-muted);
+}
+
+@media (min-width: 640px) {
+  .hero h1 {
+    font-size: 68px;
+  }
+}
+
+</style>
+
+<div class="hero">
+  <h1>Filecoin In Numbers</h1>
+  <h2>A view into the Filecoin Network core metrics</h2>
+</div>
 
 ```js
-import {linePlot} from "./components/linePlot.js";
-import {monthlyAverageLinePlot} from "./components/monthlyAverageLinePlot.js";
+const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
 ```
 
-```sql id=m
-select
-  date,
-  onboarded_data_pibs,
-  avg(onboarded_data_pibs) over (order by date rows between 30 preceding and current row) as onboarded_data_pibs_30d_avg,
-  data_on_active_deals_pibs,
-  unique_deal_making_clients,
-  avg(unique_deal_making_clients) over (order by date rows between 30 preceding and current row) as unique_deal_making_clients_30d_avg,
-  unique_deal_making_providers,
-  avg(unique_deal_making_providers) over (order by date rows between 30 preceding and current row) as unique_deal_making_providers_30d_avg,
-  raw_power_pibs,
-  quality_adjusted_power_pibs,
-  clients_with_active_deals,
-  providers_with_active_deals,
-  deal_ends,
-  deal_slashes
-from metrics
-```
+## Deals
 
 <div class="grid grid-cols-2">
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Daily Data Onboarding",
+      subtitle: "Data onboarded to the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, {x: "date", y: "onboarded_data_pibs", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Daily Deals",
+      subtitle: "Deals made per day",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Deals"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, {x: "date", y: "deals", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Data On Active Deals",
+      subtitle: "Amount of data on active deals",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: true})
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Active Deals",
+      subtitle: "Active deals on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Deals (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "active_deals", tip: true})
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Ended Deals",
+      subtitle: "Amount of deals that have ended",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Deals"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "deal_ends", tip: true})
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Ended Data",
+      subtitle: "Amount of data that has ended",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "ended_data_pibs", tip: true})
+      ]
+    }))
+  }</div>
+</div>
 
+## Users
+
+<div class="grid grid-cols-2">
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Dealmaking Clients",
+      subtitle: "Clients making deals on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Clients"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_clients", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Dealmaking Providers",
+      subtitle: "Providers making deals on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Providers"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_providers", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Clients With Active Deals",
+      subtitle: "Clients with active deals on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Clients"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "clients_with_active_deals", tip: true})
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Providers With Active Deals",
+      subtitle: "Providers with active deals on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Providers"},
+      marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "providers_with_active_deals", tip: true})
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Active Addresses",
+      subtitle: "Active addresses on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Addresses"},
+      marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "active_address_count_daily", tip: true})
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Total Addresses",
+      subtitle: "Total addresses on the network",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Addresses (Millions)", transform: (d) => d / 1e6},
+      marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "total_address_count", tip: true})
+      ]
+    }))
+  }</div>
+</div>
+
+## Power
+
+<div class="grid grid-cols-3">
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Raw Power",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "raw_power_pibs", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Quality Adjusted Power",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Verified Data Power",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "verified_data_power_pibs", tip: true}),
+      ]
+    }))
+  }</div>
+</div>
+
+## Circulating Supply
+
+<div class="grid grid-cols-2">
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Circulating FIL",
+      subtitle: "Circulating Filecoin tokens",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "circulating_fil", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Mined FIL",
+      subtitle: "Filecoin tokens mined",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "mined_fil", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Vested FIL",
+      subtitle: "Filecoin tokens vested",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "vested_fil", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Reserve Disbursed FIL",
+      subtitle: "Filecoin tokens disbursed from the reserve",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "reserve_disbursed_fil", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Locked FIL",
+      subtitle: "Filecoin tokens locked",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "locked_fil", tip: true}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Burnt FIL",
+      subtitle: "Filecoin tokens burnt",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "burnt_fil", tip: true}),
+      ]
+    }))
+  }</div>
+</div>
+
+---
+
+## Moar data
+
+Here are some resources for you to explore and learn more about Filecoin data.
+
+<div class="grid grid-cols-4">
   <div class="card">
-    ${resize((width) =>
-      monthlyAverageLinePlot(
-        width,
-        m,
-        "date",
-        "onboarded_data_pibs",
-        "Onboarded PiBs",
-        "Daily Data Onboarding"
-      )
-    )}
+    Build your own data apps using <a href="https://github.com/davidgasquez/filecoin-data-portal/">Filecoin Data Portal</a> datasets.
   </div>
-
   <div class="card">
-    ${resize((width) => linePlot(
-        width,
-        m,
-        "date",
-        "data_on_active_deals_pibs",
-        "PiBs",
-        "Data on Active Deals"
-      ))
-    }
+    Dig deeper into the Clients, Providers, and Allocators data using <a href="https://filecoinpulse.pages.dev/">Filecoin Pulse</a>.
   </div>
-
   <div class="card">
-    ${resize((width) =>
-      monthlyAverageLinePlot(
-        width,
-        m,
-        "date",
-        "unique_deal_making_clients",
-        "Clients",
-        "Deal Making Clients"
-      )
-    )}
+    Contributing to the Filecoin Data Portal is easy! <a href="https://github.com/davidgasquez/filecoin-data-portal/">Check out the GitHub repo</a>.
   </div>
-
   <div class="card">
-    ${resize((width) =>
-      monthlyAverageLinePlot(
-        width,
-        m,
-        "date",
-        "unique_deal_making_providers",
-        "Providers",
-        "Deal Making Providers"
-      )
-    )}
+    Explore these metrics in <a href="https://dune.com/kalen/filecoin-daily-metrics">Dune Analytics</a> and create your own dashboards and queries.
   </div>
-
-  <div class="card">
-    ${resize((width) => monthlyAverageLinePlot(
-        width,
-        m,
-        "date",
-        "clients_with_active_deals",
-        "Clients",
-        "Clients with Active Deals"
-      ))
-    }
-  </div>
-
-  <div class="card">
-    ${resize((width) => monthlyAverageLinePlot(
-        width,
-        m,
-        "date",
-        "providers_with_active_deals",
-        "Providers",
-        "Providers with Active Deals"
-      ))
-    }
-  </div>
-
-  <div class="card">
-    ${resize((width) => linePlot(
-        width,
-        m,
-        "date",
-        "raw_power_pibs",
-        "PiBs",
-        "Raw Power"
-      ))
-    }
-  </div>
-
-  <div class="card">
-    ${resize((width) => linePlot(
-        width,
-        m,
-        "date",
-        "quality_adjusted_power_pibs",
-        "PiBs",
-        "Quality Adjusted Power"
-      ))
-    }
-  </div>
-
 </div>
