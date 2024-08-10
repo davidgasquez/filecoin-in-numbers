@@ -8,7 +8,7 @@ COPY (
     provider_id,
     raw_power_pibs,
     quality_adjusted_power_pibs,
-  FROM read_parquet('https://filecoindataportal.davidgasquez.com/data/filecoin_daily_storage_providers_metrics.parquet')
+  FROM read_parquet('https://data.filecoindataportal.xyz/filecoin_daily_storage_providers_metrics.parquet')
   where raw_power_pibs > 0
   order by provider_id desc, date desc
 ) TO STDOUT (FORMAT 'parquet', compression 'zstd', ROW_GROUP_SIZE '20000');
