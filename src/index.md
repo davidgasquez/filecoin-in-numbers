@@ -46,65 +46,71 @@ toc: false
 
 <div class="hero">
   <h1>Filecoin In Numbers</h1>
-  <h2>A view into the Filecoin Network core metrics</h2>
+  <h2>A high level view into the Filecoin Network core metrics!</h2>
 </div>
 
 ```js
 const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
 ```
 
-## Deals
+## Data Onboarding
+
+<div class="card">${
+  resize((width) => Plot.plot({
+    title: "Onboarded Data",
+    subtitle: "How much data (PiBs) is being onboarded in to Filecoin.",
+    caption: "Displaying 30-day moving average",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "PiBs"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "onboarded_data_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "onboarded_data_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+}</div>
 
 <div class="grid grid-cols-2">
   <div class="card">${
     resize((width) => Plot.plot({
-      title: "Daily Data Onboarding",
-      subtitle: "Data onboarded to the network",
+      title: "Data On Active Deals",
+      subtitle: "How much data was active on the network at a given time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs"},
       marks: [
         Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "onboarded_data_pibs", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Daily Deals",
-      subtitle: "Deals made per day",
+      subtitle: "Number of deals made on the network.",
+      caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Deals"},
       marks: [
         Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "deals", tip: true}),
+        Plot.lineY(metrics, {x: "date", y: "deals", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "deals", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
-  <div class="card">${
+  <!-- <div class="card">${
     resize((width) => Plot.plot({
-      title: "Data On Active Deals",
-      subtitle: "Amount of data on active deals",
+      title: "Data On Active Deals Change",
+      subtitle: "TODO",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs"},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: true})
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Active Deals",
-      subtitle: "Active deals on the network",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Deals (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "active_deals", tip: true})
+        Plot.lineY(metrics, {x: "date", y: "data_on_active_deals_pibs_daily_change", tip: true})
       ]
     }))
   }</div>
@@ -133,7 +139,7 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
         Plot.areaY(metrics, {x: "date", y: "ended_data_pibs", tip: true})
       ]
     }))
-  }</div>
+  }</div> -->
 </div>
 
 ## Users
@@ -142,78 +148,86 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Dealmaking Clients",
-      subtitle: "Clients making deals on the network",
+      subtitle: "Clients making deals on the network.",
+      caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Clients"},
       marks: [
         Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_clients", tip: true}),
+        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_clients", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "unique_deal_making_clients", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Dealmaking Providers",
-      subtitle: "Providers making deals on the network",
+      subtitle: "Providers making deals on the network.",
+      caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Providers"},
       marks: [
         Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_providers", tip: true}),
+        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_providers", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "unique_deal_making_providers", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Clients With Active Deals",
-      subtitle: "Clients with active deals on the network",
+      subtitle: "How many clients have active deals on the network at a given time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Clients"},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "clients_with_active_deals", tip: true})
+        Plot.areaY(metrics, {x: "date", y: "clients_with_active_deals", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "clients_with_active_deals", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Providers With Active Deals",
-      subtitle: "Providers with active deals on the network",
+      subtitle: "How many providers have active deals on the network at a given time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Providers"},
       marks: [
-      Plot.ruleY([0]),
-      Plot.areaY(metrics, {x: "date", y: "providers_with_active_deals", tip: true})
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "providers_with_active_deals", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "providers_with_active_deals", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Active Addresses",
-      subtitle: "Active addresses on the network",
+      subtitle: "Addresses that appeared on chain at a given time.",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "Addresses"},
+      y: {grid: true, label: "Active Addresses"},
       marks: [
-      Plot.ruleY([0]),
-      Plot.areaY(metrics, {x: "date", y: "active_address_count_daily", tip: true})
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "active_address_count_daily", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "active_address_count_daily", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Total Addresses",
-      subtitle: "Total addresses on the network",
+      subtitle: "How many addresses have interacted with the network.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Addresses (Millions)", transform: (d) => d / 1e6},
       marks: [
-      Plot.ruleY([0]),
-      Plot.areaY(metrics, {x: "date", y: "total_address_count", tip: true})
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "total_address_count", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "total_address_count", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
@@ -221,123 +235,149 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
 
 ## Power
 
-<div class="grid grid-cols-3">
+<div class="grid grid-cols-2">
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Raw Power",
+      subtitle: "Total raw power (PiBs) capacity on the network over time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs"},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "raw_power_pibs", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "raw_power_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "raw_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Quality Adjusted Power",
+      subtitle: "Total quality adjusted power (PiBs) capacity on the network over time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs"},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Verified Data Power",
+      subtitle: "Total verified data power (PiBs) capacity on the network over time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs"},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "verified_data_power_pibs", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "verified_data_power_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "verified_data_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
+      ]
+    }))
+  }</div>
+    <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Network Utilization Ratio",
+      subtitle: "How much of the network's power is being used.",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Percentage (%)"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "network_utilization_ratio", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "network_utilization_ratio", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
 </div>
 
-## Circulating Supply
+## Economics
 
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-3">
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Circulating FIL",
-      subtitle: "Circulating Filecoin tokens",
+      subtitle: "Amount of FIL circulating and tradeable in the economy.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "circulating_fil", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "circulating_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "circulating_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Mined FIL",
-      subtitle: "Filecoin tokens mined",
+      subtitle: "Amount of FIL that has been mined by storage miners.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "mined_fil", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "mined_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "mined_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Vested FIL",
-      subtitle: "Filecoin tokens vested",
+      subtitle: "Amount of FIL that is vested from genesis allocation.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "vested_fil", tip: true}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Reserve Disbursed FIL",
-      subtitle: "Filecoin tokens disbursed from the reserve",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "reserve_disbursed_fil", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "vested_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "vested_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Locked FIL",
-      subtitle: "Filecoin tokens locked",
+      subtitle: "Amount of FIL locked as part of initial pledge, deal pledge, locked rewards, and other locking mechanisms.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "locked_fil", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "locked_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "locked_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Burnt FIL",
-      subtitle: "Filecoin tokens burnt",
+      subtitle: "Amount of FIL burned as part of on-chain computations and penalties",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "burnt_fil", tip: true}),
+        Plot.areaY(metrics, {x: "date", y: "burnt_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "burnt_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Reward Per Wincount",
+      subtitle: "Weighted average block rewards awarded by the Filecoin Network per WinCount over time.",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.areaY(metrics, {x: "date", y: "reward_per_wincount", tip: false, fill: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "reward_per_wincount", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
   }</div>
@@ -349,7 +389,7 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
 
 Here are some resources for you to explore and learn more about Filecoin data.
 
-<div class="grid grid-cols-4">
+<div class="grid grid-cols-2">
   <div class="card">
     Build your own data apps using <a href="https://github.com/davidgasquez/filecoin-data-portal/">Filecoin Data Portal</a> datasets.
   </div>
