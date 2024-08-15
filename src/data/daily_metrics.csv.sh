@@ -24,11 +24,24 @@ COPY (
     verified_data_power_pibs,
     network_utilization_ratio * 100 as network_utilization_ratio,
     circulating_fil,
+    circulating_fil - lag(circulating_fil) over (order by date) as circulating_fil_delta,
     mined_fil,
+    mined_fil - lag(mined_fil) over (order by date) as mined_fil_delta,
     vested_fil,
+    vested_fil - lag(vested_fil) over (order by date) as vested_fil_delta,
     locked_fil,
+    locked_fil - lag(locked_fil) over (order by date) as locked_fil_delta,
     burnt_fil,
-    reward_per_wincount
+    burnt_fil - lag(burnt_fil) over (order by date) as burnt_fil_delta,
+    reward_per_wincount,
+    reward_per_wincount - lag(reward_per_wincount) over (order by date) as reward_per_wincount_delta,
+    sector_snap_raw_power_pibs,
+    sector_expire_raw_power_pibs,
+    sector_recover_raw_power_pibs,
+    sector_fault_raw_power_pibs,
+    sector_extended_raw_power_pibs,
+    sector_terminated_raw_power_pibs,
+    sector_onboarding_raw_power_pibs,
   FROM read_parquet('https://data.filecoindataportal.xyz/filecoin_daily_metrics.parquet')
 ) TO STDOUT (FORMAT 'CSV');
 EOF

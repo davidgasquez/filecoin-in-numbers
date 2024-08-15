@@ -50,28 +50,57 @@ toc: false
 </div>
 
 ```js
-const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
+const metrics = await FileAttachment("./data/daily_metrics.csv").csv({typed: true});
+
+const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) => metrics.map(({date, [metric]: value}) => ({date, metric, value})));
+
+const sector_metrics = [
+  "sector_snap_raw_power_pibs",
+  "sector_expire_raw_power_pibs",
+  "sector_recover_raw_power_pibs",
+  "sector_fault_raw_power_pibs",
+  "sector_extended_raw_power_pibs",
+  "sector_terminated_raw_power_pibs",
+  "sector_onboarding_raw_power_pibs",
+].flatMap((metric) => metrics.map(({date, [metric]: value}) => ({date, metric, value})));
 ```
 
 ## Data Onboarding
 
-<div class="card">${
+<div class="card">
+
+  ```js
   resize((width) => Plot.plot({
     title: "Data Flow",
     subtitle: "How much data (PiBs) is being onboarded and offboarded.",
     caption: "Displaying 30-day moving average",
-    width,
     x: {label: "Date"},
     y: {grid: true, label: "PiBs"},
+    width,
+    color: {
+      range: ["var(--theme-foreground-focus)", "#57a773"],
+      legend: true,
+      tickFormat: (d) => d === "onboarded_data_pibs" ? "Onboarded" : "Ended"
+    },
     marks: [
       Plot.ruleY([0]),
-      Plot.lineY(metrics, {x: "date", y: "onboarded_data_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "onboarded_data_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
-      Plot.lineY(metrics, {x: "date", y: "ended_data_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "ended_data_pibs", stroke: "var(--theme-foreground)", tip: true})),
+      Plot.lineY(data_flow, {
+        x: "date",
+        y: "value",
+        stroke: "var(--theme-foreground-fainter)",
+      }),
+      Plot.lineY(data_flow, Plot.windowY(30, {
+        x: "date",
+        y: "value",
+        stroke: "metric",
+        strokeWidth: 2,
+        tip: true
+      })),
     ]
   }))
-}</div>
+  ```
+
+</div>
 
 <div class="grid grid-cols-2">
   <div class="card">${
@@ -103,60 +132,6 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
       ]
     }))
   }</div>
-  <!-- <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Daily Deals",
-      subtitle: "Number of deals made on the network.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Deals"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "deals", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "deals", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div> -->
-  <!-- <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Data On Active Deals Change",
-      subtitle: "TODO",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "PiBs"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "data_on_active_deals_pibs_daily_change", tip: true})
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Ended Deals",
-      subtitle: "Amount of deals that have ended",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Deals"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "deal_ends", tip: true})
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Ended Data",
-      subtitle: "Amount of data that has ended",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "PiBs"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "ended_data_pibs", tip: true})
-      ]
-    }))
-  }</div> -->
 </div>
 
 ## Users
@@ -342,9 +317,39 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
   }</div>
 </div>
 
+## Sectors
+
+<div class="card">
+
+  ```js
+  resize((width) => Plot.plot({
+    title: "Sector Metrics",
+    subtitle: "Metrics related to sectors on the network.",
+    caption: "Displaying 30-day moving average",
+    x: {label: "Date"},
+    y: {grid: true, label: "PiBs"},
+    width,
+    color: {
+      legend: true,
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(sector_metrics, Plot.windowY(30, {
+        x: "date",
+        y: "value",
+        stroke: "metric",
+        strokeWidth: 2,
+        tip: true
+      })),
+    ]
+  }))
+  ```
+
+</div>
+
 ## Economics
 
-<div class="grid grid-cols-3">
+<div class="grid grid-cols-2">
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Circulating FIL",
@@ -356,6 +361,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
         Plot.ruleY([0]),
         Plot.areaY(metrics, {x: "date", y: "circulating_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
         Plot.lineY(metrics, {x: "date", y: "circulating_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Circulating FIL Delta",
+      subtitle: "Daily change in circulating FIL over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL", type: "log"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "circulating_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
@@ -375,6 +395,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
+      title: "Mined FIL Delta",
+      subtitle: "Daily change in mined FIL over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "mined_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "mined_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
       title: "Vested FIL",
       subtitle: "Amount of FIL that is vested from genesis allocation.",
       width,
@@ -384,6 +419,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
         Plot.ruleY([0]),
         Plot.areaY(metrics, {x: "date", y: "vested_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
         Plot.lineY(metrics, {x: "date", y: "vested_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Vested FIL Delta",
+      subtitle: "Daily change in vested FIL over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "vested_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "vested_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
@@ -403,6 +453,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
+      title: "Locked FIL Delta",
+      subtitle: "Daily change in locked FIL over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "locked_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "locked_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
       title: "Burnt FIL",
       subtitle: "Amount of FIL burned as part of on-chain computations and penalties",
       width,
@@ -412,6 +477,20 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
         Plot.ruleY([0]),
         Plot.areaY(metrics, {x: "date", y: "burnt_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
         Plot.lineY(metrics, {x: "date", y: "burnt_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Burnt FIL Delta",
+      subtitle: "Daily change in burnt FIL over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL", type: "log"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "burnt_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "burnt_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
@@ -429,11 +508,25 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
       ]
     }))
   }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Reward per Wincount FIL Delta",
+      subtitle: "Daily change in burnt FIL over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "reward_per_wincount_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "reward_per_wincount_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
 </div>
 
 ---
 
-## Moar data
+## More data?
 
 Here are some resources for you to explore and learn more about Filecoin data.
 
