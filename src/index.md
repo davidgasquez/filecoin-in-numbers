@@ -57,8 +57,8 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
 
 <div class="card">${
   resize((width) => Plot.plot({
-    title: "Onboarded Data",
-    subtitle: "How much data (PiBs) is being onboarded in to Filecoin.",
+    title: "Data Flow",
+    subtitle: "How much data (PiBs) is being onboarded and offboarded.",
     caption: "Displaying 30-day moving average",
     width,
     x: {label: "Date"},
@@ -67,6 +67,8 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
       Plot.ruleY([0]),
       Plot.lineY(metrics, {x: "date", y: "onboarded_data_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
       Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "onboarded_data_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+      Plot.lineY(metrics, {x: "date", y: "ended_data_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "ended_data_pibs", stroke: "var(--theme-foreground)", tip: true})),
     ]
   }))
 }</div>
@@ -88,6 +90,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
+      title: "Data Delta",
+      subtitle: "Daily change in data on the network over time.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "TiBs / day"},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, {x: "date", y: "data_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "data_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <!-- <div class="card">${
+    resize((width) => Plot.plot({
       title: "Daily Deals",
       subtitle: "Number of deals made on the network.",
       caption: "Displaying 30-day moving average",
@@ -100,7 +117,7 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "deals", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
-  }</div>
+  }</div> -->
   <!-- <div class="card">${
     resize((width) => Plot.plot({
       title: "Data On Active Deals Change",
@@ -207,13 +224,14 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
     resize((width) => Plot.plot({
       title: "Active Addresses",
       subtitle: "Addresses that appeared on chain at a given time.",
+      caption: "Displaying 30-day moving average on a log scale",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "Active Addresses"},
+      y: {grid: true, label: "Active Addresses", type: "log"},
       marks: [
         Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "active_address_count_daily", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "active_address_count_daily", tip: true, stroke: "var(--theme-foreground-focus)"}),
+        Plot.lineY(metrics, {x: "date", y: "active_address_count_daily", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "active_address_count_daily", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
@@ -252,6 +270,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
   }</div>
   <div class="card">${
     resize((width) => Plot.plot({
+      title: "Raw Power Delta",
+      subtitle: "Daily change in raw power on the network over time.",
+      caption: "Displaying 30-day moving average on a symlog scale",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs", type: "symlog"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "raw_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "raw_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
       title: "Quality Adjusted Power",
       subtitle: "Total quality adjusted power (PiBs) capacity on the network over time.",
       width,
@@ -261,6 +294,21 @@ const metrics = FileAttachment("./data/daily_metrics.csv").csv({typed: true});
         Plot.ruleY([0]),
         Plot.areaY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
         Plot.lineY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Quality Adjusted Power Delta",
+      subtitle: "Daily change in quality adjusted power on the network over time.",
+      caption: "Displaying 30-day moving average on a symlog scale",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "PiBs", type: "symlog"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "quality_adjusted_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "quality_adjusted_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>
