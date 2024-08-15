@@ -9,7 +9,7 @@ toc: false
   flex-direction: column;
   align-items: center;
   font-family: var(--sans-serif);
-  margin: 2rem 0 6rem;
+  margin: 2rem 0 4rem;
   text-wrap: balance;
   text-align: center;
 }
@@ -50,8 +50,22 @@ toc: false
 </div>
 
 ```js
-const metrics = await FileAttachment("./data/daily_metrics.csv").csv({typed: true});
+const am = await FileAttachment("./data/daily_metrics.csv").csv({typed: true});
+```
 
+<div style="display: flex; justify-content: flex-end;">
+
+  ```js
+  const timeframe = view(Inputs.radio(["All", "Last Year"], {value: "All"}));
+  ```
+
+</div>
+
+```js
+const metrics = timeframe === "All" ? am : am.slice(am.length - 365);
+```
+
+```js
 const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) => metrics.map(({date, [metric]: value}) => ({date, metric, value})));
 
 const sector_metrics = [
