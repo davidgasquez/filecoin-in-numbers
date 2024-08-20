@@ -9,7 +9,7 @@ toc: false
   flex-direction: column;
   align-items: center;
   font-family: var(--sans-serif);
-  margin: 2rem 0 4rem;
+  margin: 2rem 0 2.4rem;
   text-wrap: balance;
   text-align: center;
 }
@@ -47,6 +47,15 @@ toc: false
 <div class="hero">
   <h1>Filecoin In Numbers</h1>
   <h2>A high level view into the Filecoin Network core metrics!</h2>
+</div>
+
+<div style="display: flex; justify-content: center">
+  <a href="#data-onboarding">Data Onboarding</a> &nbsp; • &nbsp;
+  <a href="#users">Users</a> &nbsp; • &nbsp;
+  <a href="#power">Power</a> &nbsp; • &nbsp;
+  <a href="#sectors">Sectors</a> &nbsp; • &nbsp;
+  <a href="#economics">Economics</a> &nbsp; • &nbsp;
+  <a href="#gas">Gas</a>
 </div>
 
 ```js
@@ -138,7 +147,7 @@ const sector_metrics = [
       caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "TiBs / day"},
+      y: {grid: true, label: "PiBs / day"},
       marks: [
         Plot.ruleY([0]),
         Plot.lineY(metrics, {x: "date", y: "data_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
@@ -239,6 +248,21 @@ const sector_metrics = [
     }))
   }</div>
 </div>
+<div class="card">${
+  resize((width) => Plot.plot({
+    title: "Mean Deal Duration",
+    subtitle: "How many days are deals expected to last.",
+    caption: "Displaying 30-day moving average",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Mean Deal Duration"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "mean_deal_duration_days", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "mean_deal_duration_days", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+}</div>
 
 ## Power
 
@@ -538,6 +562,116 @@ const sector_metrics = [
   }</div>
 </div>
 
+## Gas
+
+<div class="card">${
+  resize((width) => Plot.plot({
+    title: "Total Gas Used",
+    subtitle: "Total gas used per day on the network.",
+    caption: "Displaying 30-day moving average",
+    width,
+    marginLeft: 50,
+    x: {label: "Date"},
+    y: {grid: true, label: "FIL"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "total_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "total_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+}</div>
+<div class="grid grid-cols-2">
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Provecommit Sector Gas Used",
+      subtitle: "Total gas used for provecommit sector operations per day on the network.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "provecommit_sector_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "provecommit_sector_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Precommit Sector Gas Used",
+      subtitle: "Total gas used for precommit sector operations per day on the network.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "precommit_sector_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "precommit_sector_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Provecommit Aggregate Gas Used",
+      subtitle: "Total gas used for provecommit aggregate operations per day on the network.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "provecommit_aggregate_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "provecommit_aggregate_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Precommit Sector Batch Gas Used",
+      subtitle: "Total gas used for precommit sector batch operations per day on the network.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "precommit_sector_batch_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "precommit_sector_batch_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Publish Storage Deals Gas Used",
+      subtitle: "Total gas used for publish storage deals operations per day on the network.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "publish_storage_deals_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "publish_storage_deals_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Submit Windowed PoSt Gas Used",
+      subtitle: "Total gas used for submit windowed PoSt operations per day on the network.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "FIL"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "submit_windowed_post_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "submit_windowed_post_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+</div>
 ---
 
 ## More data?

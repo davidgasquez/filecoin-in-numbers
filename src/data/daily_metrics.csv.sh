@@ -15,6 +15,7 @@ COPY (
     unique_deal_making_providers,
     clients_with_active_deals,
     providers_with_active_deals,
+    mean_deal_duration_days,
     active_address_count_daily,
     total_address_count,
     raw_power_pibs,
@@ -42,6 +43,13 @@ COPY (
     sector_extended_raw_power_pibs,
     sector_terminated_raw_power_pibs,
     sector_onboarding_raw_power_pibs,
+    total_gas_used_fil,
+    provecommit_sector_gas_used_fil,
+    precommit_sector_gas_used_fil,
+    provecommit_aggregate_gas_used_fil,
+    precommit_sector_batch_gas_used_fil,
+    publish_storage_deals_gas_used_fil,
+    submit_windowed_post_gas_used_fil
   FROM read_parquet('https://data.filecoindataportal.xyz/filecoin_daily_metrics.parquet')
 ) TO STDOUT (FORMAT 'CSV');
 EOF
