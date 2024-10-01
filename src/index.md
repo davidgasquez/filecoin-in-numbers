@@ -250,12 +250,12 @@ const sector_metrics = [
 </div>
 <div class="card">${
   resize((width) => Plot.plot({
-    title: "Mean Deal Duration",
-    subtitle: "How many days are deals expected to last.",
+    title: "Mean Active Deal Duration",
+    subtitle: "How many days deals active on a date are expected to last.",
     caption: "Displaying 30-day moving average",
     width,
     x: {label: "Date"},
-    y: {grid: true, label: "Mean Deal Duration"},
+    y: {grid: true, label: "Mean Active Deal Duration"},
     marks: [
       Plot.ruleY([0]),
       Plot.lineY(metrics, {x: "date", y: "mean_deal_duration_days", tip: false, stroke: "var(--theme-foreground-fainter)"}),
