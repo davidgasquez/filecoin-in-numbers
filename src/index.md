@@ -64,9 +64,9 @@ const am = await FileAttachment("./data/daily_metrics.csv").csv({typed: true});
 
 <div style="display: flex; justify-content: flex-end;">
 
-  ```js
-  const timeframe = view(Inputs.radio(["All", "Last Year"], {value: "All"}));
-  ```
+```js
+const timeframe = view(Inputs.radio(["All", "Last Year"], {value: "All"}));
+```
 
 </div>
 
@@ -76,16 +76,6 @@ const metrics = timeframe === "All" ? am : am.slice(am.length - 365);
 
 ```js
 const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) => metrics.map(({date, [metric]: value}) => ({date, metric, value})));
-
-const sector_metrics = [
-  "sector_snap_raw_power_pibs",
-  "sector_expire_raw_power_pibs",
-  "sector_recover_raw_power_pibs",
-  "sector_fault_raw_power_pibs",
-  "sector_extended_raw_power_pibs",
-  "sector_terminated_raw_power_pibs",
-  "sector_onboarding_raw_power_pibs",
-].flatMap((metric) => metrics.map(({date, [metric]: value}) => ({date, metric, value})));
 ```
 
 ## Data Onboarding
@@ -285,14 +275,14 @@ const sector_metrics = [
     resize((width) => Plot.plot({
       title: "Raw Power Delta",
       subtitle: "Daily change in raw power on the network over time.",
-      caption: "Displaying 30-day moving average on a symlog scale",
+      caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "PiBs", type: "symlog"},
+      y: {grid: true, label: "PiBs", domain: [-70, 70]},
       marks: [
-        Plot.lineY(metrics, {x: "date", y: "raw_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "raw_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
         Plot.ruleY([0]),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "raw_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "raw_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
       ]
     }))
   }</div>
@@ -314,14 +304,14 @@ const sector_metrics = [
     resize((width) => Plot.plot({
       title: "Quality Adjusted Power Delta",
       subtitle: "Daily change in quality adjusted power on the network over time.",
-      caption: "Displaying 30-day moving average on a symlog scale",
+      caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "PiBs", type: "symlog"},
+      y: {grid: true, label: "PiBs", domain: [-70, 70]},
       marks: [
-        Plot.lineY(metrics, {x: "date", y: "quality_adjusted_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "quality_adjusted_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
         Plot.ruleY([0]),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "quality_adjusted_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "quality_adjusted_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
       ]
     }))
   }</div>
@@ -359,30 +349,57 @@ const sector_metrics = [
 
 <div class="card">
 
-  ```js
-  resize((width) => Plot.plot({
-    title: "Sector Metrics",
-    subtitle: "Metrics related to sectors on the network.",
-    caption: "Displaying 30-day moving average",
-    x: {label: "Date"},
-    y: {grid: true, label: "PiBs"},
-    width,
-    color: {
-      legend: true,
-    },
-    marks: [
-      Plot.ruleY([0]),
-      Plot.lineY(sector_metrics, Plot.windowY(30, {
-        x: "date",
-        y: "value",
-        stroke: "metric",
-        strokeWidth: 2,
-        tip: true
-      })),
-    ]
-  }))
-  ```
+```js
+const sectorMetricType = view(Inputs.radio(["Raw Power", "Quality-Adjusted Power"], {label: "Power Type", value: "Raw Power"}));
+```
 
+```js
+const sector_metrics = sectorMetricType === "Raw Power"
+  ? [
+      {metric: "Snap", values: metrics.map(d => ({date: d.date, value: d.sector_snap_raw_power_pibs}))},
+      {metric: "Expire", values: metrics.map(d => ({date: d.date, value: d.sector_expire_raw_power_pibs}))},
+      {metric: "Recover", values: metrics.map(d => ({date: d.date, value: d.sector_recover_raw_power_pibs}))},
+      {metric: "Fault", values: metrics.map(d => ({date: d.date, value: d.sector_fault_raw_power_pibs}))},
+      {metric: "Extended", values: metrics.map(d => ({date: d.date, value: d.sector_extended_raw_power_pibs}))},
+      {metric: "Terminated", values: metrics.map(d => ({date: d.date, value: d.sector_terminated_raw_power_pibs}))},
+      {metric: "Onboarding", values: metrics.map(d => ({date: d.date, value: d.sector_onboarding_raw_power_pibs}))}
+    ]
+  : [
+      {metric: "Snap", values: metrics.map(d => ({date: d.date, value: d.sector_snap_quality_adjusted_power_pibs}))},
+      {metric: "Expire", values: metrics.map(d => ({date: d.date, value: d.sector_expire_quality_adjusted_power_pibs}))},
+      {metric: "Recover", values: metrics.map(d => ({date: d.date, value: d.sector_recover_quality_adjusted_power_pibs}))},
+      {metric: "Fault", values: metrics.map(d => ({date: d.date, value: d.sector_fault_quality_adjusted_power_pibs}))},
+      {metric: "Extended", values: metrics.map(d => ({date: d.date, value: d.sector_extended_quality_adjusted_power_pibs}))},
+      {metric: "Terminated", values: metrics.map(d => ({date: d.date, value: d.sector_terminated_quality_adjusted_power_pibs}))},
+      {metric: "Onboarding", values: metrics.map(d => ({date: d.date, value: d.sector_onboarding_quality_adjusted_power_pibs}))}
+    ];
+
+const sector_metrics_data = sector_metrics.flatMap(({metric, values}) => values.map(v => ({...v, metric})));
+```
+
+```js
+resize((width) => Plot.plot({
+  title: `Sector Data by Event (${sectorMetricType})`,
+  subtitle: "How much data each event type has on the network on a given date.",
+  caption: "Displaying 30-day moving average",
+  x: {label: "Date"},
+  y: {grid: true, label: "PiBs"},
+  width,
+  color: {
+    legend: true,
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(sector_metrics_data, Plot.windowY(30, {
+      x: "date",
+      y: "value",
+      stroke: "metric",
+      strokeWidth: 2,
+      tip: true
+    })),
+  ]
+}))
+```
 </div>
 
 ## Economics
