@@ -55,7 +55,8 @@ toc: false
   <a href="#power">Power</a> &nbsp; • &nbsp;
   <a href="#sectors">Sectors</a> &nbsp; • &nbsp;
   <a href="#economics">Economics</a> &nbsp; • &nbsp;
-  <a href="#gas">Gas</a>
+  <a href="#gas">Gas</a> &nbsp; • &nbsp;
+  <a href="#developer-activity">Developer Activity</a>
 </div>
 
 ```js
@@ -120,6 +121,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
     resize((width) => Plot.plot({
       title: "Data On Active Deals",
       subtitle: "How much data was active on the network at a given time.",
+      caption: "Only displaying data from State Market Deals.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs"},
@@ -169,7 +171,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
     resize((width) => Plot.plot({
       title: "Dealmaking Providers",
       subtitle: "Providers making deals on the network.",
-      caption: "Displaying 30-day moving average",
+      caption: "Displaying 30-day moving average. Only State Market Deals are considered.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Providers"},
@@ -183,7 +185,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Clients With Active Deals",
-      subtitle: "How many clients have active deals on the network at a given time.",
+      subtitle: "How many clients have active (State Market) deals on the network at a given time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Clients"},
@@ -197,7 +199,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Providers With Active Deals",
-      subtitle: "How many providers have active deals on the network at a given time.",
+      subtitle: "How many providers have active (State Market) deals on the network at a given time.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Providers"},
@@ -685,6 +687,101 @@ resize((width) => Plot.plot({
         Plot.lineY(metrics, {x: "date", y: "submit_windowed_post_gas_used_fil", tip: false, stroke: "var(--theme-foreground-fainter)"}),
         Plot.ruleY([0]),
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "submit_windowed_post_gas_used_fil", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+</div>
+
+## Developer Activity
+
+<div class="grid grid-cols-2">
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Commits",
+      subtitle: "Number of commits per day on the core Filecoin repositories.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Events"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "github_commit_code_events", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "github_commit_code_events", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Issues Closed",
+      subtitle: "Number of issues closed per day on the core Filecoin repositories.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Events"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "github_issue_closed_events", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "github_issue_closed_events", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Issue Comments",
+      subtitle: "Number of issue comments per day on the core Filecoin repositories.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Events"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "github_issue_comment_events", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "github_issue_comment_events", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Issues Opened",
+      subtitle: "Number of issues opened per day on the core Filecoin repositories.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Events"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "github_issue_opened_events", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "github_issue_opened_events", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Pull Requests Closed",
+      subtitle: "Number of pull requests closed per day on the core Filecoin repositories.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Events"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "github_pull_request_closed_events", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "github_pull_request_closed_events", stroke: "var(--theme-foreground-focus)", tip: true})),
+      ]
+    }))
+  }</div>
+  <div class="card">${
+    resize((width) => Plot.plot({
+      title: "Pull Requests Merged",
+      subtitle: "Number of pull requests merged per day on the core Filecoin repositories.",
+      caption: "Displaying 30-day moving average",
+      width,
+      x: {label: "Date"},
+      y: {grid: true, label: "Events"},
+      marks: [
+        Plot.lineY(metrics, {x: "date", y: "github_pull_request_merged_events", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.ruleY([0]),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "github_pull_request_merged_events", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
     }))
   }</div>

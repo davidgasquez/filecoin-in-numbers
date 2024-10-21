@@ -56,7 +56,14 @@ COPY (
     provecommit_aggregate_gas_used_fil,
     precommit_sector_batch_gas_used_fil,
     publish_storage_deals_gas_used_fil,
-    submit_windowed_post_gas_used_fil
+    submit_windowed_post_gas_used_fil,
+    github_commit_code_events,
+    github_forked_events,
+    github_issue_closed_events,
+    github_issue_comment_events,
+    github_issue_opened_events,
+    github_pull_request_closed_events,
+    github_pull_request_merged_events
   FROM read_parquet('https://data.filecoindataportal.xyz/filecoin_daily_metrics.parquet')
 ) TO STDOUT (FORMAT 'CSV');
 EOF
