@@ -46,7 +46,8 @@ toc: false
 
 <div class="hero">
   <h1>Filecoin In Numbers</h1>
-  <h2>A high level view into the Filecoin Network core metrics!</h2>
+  <h2>A high level view into Filecoin Network core metrics.</h2>
+  <h2>Explore the <a href="https://github.com/davidgasquez/filecoin-in-numbers">code</a> or <a href="https://github.com/davidgasquez/filecoin-in-numbers/issues">open an issue</a> on GitHub.</h2>
 </div>
 
 <div style="display: flex; justify-content: center">
@@ -87,7 +88,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
   resize((width) => Plot.plot({
     title: "Data Flow",
     subtitle: "How much data (PiBs) is being onboarded and offboarded.",
-    caption: "Displaying 30-day moving average",
+    caption: "Displaying 30-day moving average for State Market Deals data.",
     x: {label: "Date"},
     y: {grid: true, label: "PiBs"},
     width,
@@ -135,8 +136,8 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
   <div class="card">${
     resize((width) => Plot.plot({
       title: "Data Delta",
-      subtitle: "Daily change in data on the network over time.",
-      caption: "Displaying 30-day moving average",
+      subtitle: "Daily change in data on the network over time (State Market Deals).",
+      caption: "Displaying 30-day moving average for State Market Deals data.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "PiBs / day"},
@@ -156,7 +157,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
     resize((width) => Plot.plot({
       title: "Dealmaking Clients",
       subtitle: "Clients making deals on the network.",
-      caption: "Displaying 30-day moving average",
+      caption: "Displaying 30-day moving average for State Market Deals data.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Clients"},
@@ -171,7 +172,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
     resize((width) => Plot.plot({
       title: "Dealmaking Providers",
       subtitle: "Providers making deals on the network.",
-      caption: "Displaying 30-day moving average. Only State Market Deals are considered.",
+      caption: "Displaying 30-day moving average for State Market Deals data.",
       width,
       x: {label: "Date"},
       y: {grid: true, label: "Providers"},
@@ -786,9 +787,11 @@ resize((width) => Plot.plot({
     }))
   }</div>
 </div>
+
+
 ---
 
-## More data?
+## Resources
 
 Here are some resources for you to explore and learn more about Filecoin data.
 
@@ -806,3 +809,8 @@ Here are some resources for you to explore and learn more about Filecoin data.
     Explore these metrics in <a href="https://dune.com/kalen/filecoin-daily-metrics">Dune Analytics</a> and create your own dashboards and queries.
   </div>
 </div>
+
+#### Disclaimer
+
+
+_Charts shown here are for informational purposes only. The data pipelines powering this are optimized for analytical purposes and might not be 100% accurate._
