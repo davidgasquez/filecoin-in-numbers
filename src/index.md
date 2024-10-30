@@ -445,7 +445,7 @@ resize((width) => Plot.plot({
       caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "Events"},
+      y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6},
       marks: [
         Plot.ruleY([0]),
         Plot.lineY(metrics, {x: "date", y: "commit_capacity_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
