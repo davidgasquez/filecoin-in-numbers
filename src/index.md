@@ -369,11 +369,11 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
     caption: "Displaying 30-day moving average.",
     width,
     x: {label: "Date"},
-    y: {grid: true, label: "PiBs / day"},
+    y: {grid: true, label: "TiBs / day"},
     marks: [
       Plot.ruleY([0]),
-      Plot.lineY(metrics, {x: "date", y: "ddo_sector_onboarding_raw_power_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "ddo_sector_onboarding_raw_power_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+      Plot.lineY(metrics, {x: "date", y: "ddo_sector_onboarding_raw_power_tibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "ddo_sector_onboarding_raw_power_tibs", stroke: "var(--theme-foreground-focus)", tip: true})),
     ]
   }))
 }</div>

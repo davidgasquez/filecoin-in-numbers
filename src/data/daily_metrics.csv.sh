@@ -48,7 +48,7 @@ COPY (
     sector_onboarding_count,
     ddo_sector_onboarding_count,
     sector_onboarding_raw_power_pibs,
-    ddo_sector_onboarding_raw_power_pibs,
+    ddo_sector_onboarding_raw_power_tibs,
     sector_onboarding_quality_adjusted_power_pibs,
     sector_terminated_raw_power_pibs,
     sector_terminated_quality_adjusted_power_pibs,
