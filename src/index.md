@@ -585,9 +585,9 @@ resize((width) => Plot.plot({
       caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "FIL", type: "log"},
+      y: {grid: true, label: "FIL", domain: [0, 1000000]},
       marks: [
-        Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)",
         Plot.ruleY([0]),
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "circulating_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
@@ -643,9 +643,9 @@ resize((width) => Plot.plot({
       caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "FIL"},
+      y: {grid: true, label: "FIL", domain: [0, 1000000]},
       marks: [
-        Plot.lineY(metrics, {x: "date", y: "vested_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "vested_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
         Plot.ruleY([0]),
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "vested_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
@@ -672,9 +672,9 @@ resize((width) => Plot.plot({
       caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "FIL"},
+      y: {grid: true, label: "FIL", domain: [-400000, 500000]},
       marks: [
-        Plot.lineY(metrics, {x: "date", y: "locked_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+        Plot.lineY(metrics, {x: "date", y: "locked_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
         Plot.ruleY([0]),
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "locked_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]
