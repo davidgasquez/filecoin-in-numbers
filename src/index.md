@@ -587,7 +587,7 @@ resize((width) => Plot.plot({
       x: {label: "Date"},
       y: {grid: true, label: "FIL", domain: [0, 1000000]},
       marks: [
-        Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)",
+        Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
         Plot.ruleY([0]),
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "circulating_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
       ]

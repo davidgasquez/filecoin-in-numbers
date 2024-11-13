@@ -1,5 +1,5 @@
 @import url("observablehq:default.css");
-@import url("observablehq:theme-glacier.css");
+@import url("observablehq:theme-wide.css");
 
 :root {
     --theme-foreground: #222222;
@@ -13,22 +13,9 @@
     --theme-foreground-focus: #000000;
     --serif: "Source Code Pro", monospace;
     --sans-serif: "Source Code Pro", monospace;
-}
-
-p {
-    max-width: 900px;
-}
-
-a,
-a[href] {
-    text-decoration: underline;
-}
-
-h1 a,
-h1 a[href],
-h2 a,
-h2 a[href],
-h3 a,
-h3 a[href] {
-    text-decoration: none;
+    --monospace: "Source Code Pro", monospace;
+    --theme-blue: #4269d0;
+    --theme-green: #3ca951;
+    --theme-red: #ff725c;
+    --theme-yellow: #efb118;
 }
