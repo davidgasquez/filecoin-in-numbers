@@ -1,0 +1,34 @@
+@import url("observablehq:default.css");
+@import url("observablehq:theme-glacier.css");
+
+:root {
+    --theme-foreground: #222222;
+    --theme-background: #eeeeee;
+    --theme-background-alt: #f5f5f5;
+    --theme-foreground-alt: #0e79fe;
+    --theme-foreground-muted: #444444;
+    --theme-foreground-faint: #888888;
+    --theme-foreground-fainter: #cccccc;
+    --theme-foreground-faintest: #f8f8f8;
+    --theme-foreground-focus: #000000;
+    --serif: "Source Code Pro", monospace;
+    --sans-serif: "Source Code Pro", monospace;
+}
+
+p {
+    max-width: 900px;
+}
+
+a,
+a[href] {
+    text-decoration: underline;
+}
+
+h1 a,
+h1 a[href],
+h2 a,
+h2 a[href],
+h3 a,
+h3 a[href] {
+    text-decoration: none;
+}
