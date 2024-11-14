@@ -2,53 +2,13 @@
 toc: false
 ---
 
-<style>
+<center>
 
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--sans-serif);
-  margin: 2rem 0 2.4rem;
-  text-wrap: balance;
-  text-align: center;
-}
+<h1 style="font-weight: 700; font-size: 4em; font-family: 'Source Sans 3', sans-serif; color: var(--theme-blue); letter-spacing: 0.02em">Filecoin In Numbers</h1>
 
-.hero h1 {
-  margin: 1rem 0;
-  max-width: none;
-  font-size: 12vw;
-  font-weight: 900;
-  line-height: 1;
-  background: linear-gradient(30deg, var(--theme-foreground-focus), currentColor);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero h2 {
-  margin: 0;
-  max-width: 34em;
-  font-size: 20px;
-  font-style: initial;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--theme-foreground-muted);
-}
-
-@media (min-width: 640px) {
-  .hero h1 {
-    font-size: 68px;
-  }
-}
-
-</style>
-
-<div class="hero">
-  <h1>Filecoin In Numbers</h1>
-  <h2>A high level view into Filecoin Network core metrics.</h2>
-  <h2>Explore the <a href="https://github.com/davidgasquez/filecoin-in-numbers">code</a> or <a href="https://github.com/davidgasquez/filecoin-in-numbers/issues">open an issue</a> on GitHub.</h2>
-</div>
+A high level view into Filecoin Network core metrics.
+Explore the [code](https://github.com/davidgasquez/filecoin-in-numbers) or [open an issue](https://github.com/davidgasquez/filecoin-in-numbers/issues) on GitHub.
+</center>
 
 <div style="display: flex; justify-content: center">
   <a href="#data-onboarding">Data Onboarding</a> &nbsp; • &nbsp;
@@ -93,7 +53,7 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
     y: {grid: true, label: "PiBs"},
     width,
     color: {
-      range: ["var(--theme-foreground-focus)", "#57a773"],
+      range: ["var(--theme-red)", "var(--theme-green)"],
       legend: true,
       tickFormat: (d) => d === "onboarded_data_pibs" ? "Onboarded" : "Ended"
     },
@@ -550,11 +510,11 @@ resize((width) => Plot.plot({
       caption: "Displaying 30-day moving average",
       width,
       x: {label: "Date"},
-      y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6},
+      y: {grid: true, label: "Events", domain: [0, 950000]},
       marks: [
         Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_terminated_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_terminated_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
+        Plot.lineY(metrics, {x: "date", y: "sector_terminated_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_terminated_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
       ]
     }))
   }</div>
