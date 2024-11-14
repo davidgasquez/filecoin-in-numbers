@@ -10,13 +10,13 @@ A high level view into Filecoin Network core metrics.
 Explore the [code](https://github.com/davidgasquez/filecoin-in-numbers) or [open an issue](https://github.com/davidgasquez/filecoin-in-numbers/issues) on GitHub.
 </center>
 
-<div style="display: flex; justify-content: center">
-  <a href="#data-onboarding">Data Onboarding</a> &nbsp; • &nbsp;
-  <a href="#users">Users</a> &nbsp; • &nbsp;
-  <a href="#power">Power</a> &nbsp; • &nbsp;
-  <a href="#sectors">Sectors</a> &nbsp; • &nbsp;
-  <a href="#economics">Economics</a> &nbsp; • &nbsp;
-  <a href="#gas">Gas</a> &nbsp; • &nbsp;
+<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem">
+  <a href="#data-onboarding">Data Onboarding</a> •
+  <a href="#users">Users</a> •
+  <a href="#power">Power</a> •
+  <a href="#sectors">Sectors</a> •
+  <a href="#economics">Economics</a> •
+  <a href="#gas">Gas</a> •
   <a href="#developer-activity">Developer Activity</a>
 </div>
 
