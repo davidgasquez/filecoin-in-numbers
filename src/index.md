@@ -44,198 +44,243 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
 
 <div class="card">
 
-  ```js
-  resize((width) => Plot.plot({
-    title: "Data Flow",
-    subtitle: "How much data (PiBs) is being onboarded and offboarded on State Market Deals.",
-    caption: "Displaying 30-day moving average for State Market Deals data.",
-    x: {label: "Date"},
-    y: {grid: true, label: "PiBs"},
-    width,
-    color: {
-      range: ["var(--theme-red)", "var(--theme-green)"],
-      legend: true,
-      tickFormat: (d) => d === "onboarded_data_pibs" ? "Onboarded" : "Ended"
-    },
-    marks: [
-      Plot.ruleY([0]),
-      Plot.lineY(data_flow, {
-        x: "date",
-        y: "value",
-        stroke: "var(--theme-foreground-fainter)",
-      }),
-      Plot.lineY(data_flow, Plot.windowY(30, {
-        x: "date",
-        y: "value",
-        stroke: "metric",
-        strokeWidth: 2,
-        tip: true
-      })),
-    ]
-  }))
-  ```
+```js
+Plot.plot({
+  title: "Data Flow",
+  subtitle: "How much data (PiBs) is being onboarded and offboarded on State Market Deals.",
+  caption: "Displaying 30-day moving average for State Market Deals data.",
+  x: {label: "Date"},
+  y: {grid: true, label: "PiBs"},
+  width,
+  color: {
+    range: ["var(--theme-red)", "var(--theme-green)"],
+    legend: true,
+    tickFormat: (d) => d === "onboarded_data_pibs" ? "Onboarded" : "Ended"
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(data_flow, {
+      x: "date",
+      y: "value",
+      stroke: "var(--theme-foreground-fainter)",
+    }),
+    Plot.lineY(data_flow, Plot.windowY(30, {
+      x: "date",
+      y: "value",
+      stroke: "metric",
+      strokeWidth: 2,
+      tip: true
+    })),
+  ]
+})
+```
 
 </div>
 
 <div class="grid grid-cols-2">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Data On Active Deals",
-      subtitle: "How much data was active on State Market Deals on the network at a given time.",
-      caption: "Only displaying data from State Market Deals.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "PiBs"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Data Delta",
-      subtitle: "Daily change in data on State Market Deals over time.",
-      caption: "Displaying 30-day moving average for State Market Deals data.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "PiBs / day"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "data_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "data_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Data On Active Deals",
+  subtitle: "How much data was active on State Market Deals on the network at a given time.",
+  caption: "Only displaying data from State Market Deals.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "PiBs"},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "data_on_active_deals_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Data Delta",
+    subtitle: "Daily change in data on State Market Deals over time.",
+    caption: "Displaying 30-day moving average for State Market Deals data.",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "PiBs / day"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "data_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "data_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+```
+</div>
+
 </div>
 
 ## Users
 
 <div class="grid grid-cols-2">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Dealmaking Clients",
-      subtitle: "Clients making State Market Deals on the network.",
-      caption: "Displaying 30-day moving average for State Market Deals data.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Clients"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_clients", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "unique_deal_making_clients", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Dealmaking Providers",
-      subtitle: "Providers making State Market Deals on the network.",
-      caption: "Displaying 30-day moving average for State Market Deals data.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Providers"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "unique_deal_making_providers", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "unique_deal_making_providers", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Clients With Active Deals",
-      subtitle: "How many clients have active (State Market) deals on the network at a given time.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Clients"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "clients_with_active_deals", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "clients_with_active_deals", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Providers With Active Deals",
-      subtitle: "How many providers have active (State Market) deals on the network at a given time.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Providers"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "providers_with_active_deals", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "providers_with_active_deals", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Providers With Power",
-      subtitle: "How many providers have power on the network at a given time.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Providers"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "providers_with_power", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "providers_with_power", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Active Addresses",
-      subtitle: "Addresses that appeared on chain at a given time.",
-      caption: "Displaying 30-day moving average on a log scale",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Active Addresses", type: "log"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "active_address_count_daily", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "active_address_count_daily", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Total Addresses",
-      subtitle: "How many addresses have interacted with the network.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Addresses (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "total_address_count", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "total_address_count", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Mean Active Deal Duration",
-      subtitle: "How many days deals active on a date are expected to last.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Mean Active Deal Duration"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "mean_deal_duration_days", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "mean_deal_duration_days", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Dealmaking Clients",
+    subtitle: "Clients making State Market Deals on the network.",
+    caption: "Displaying 30-day moving average for State Market Deals data.",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Clients"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "unique_deal_making_clients", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "unique_deal_making_clients", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+    title: "Dealmaking Providers",
+    subtitle: "Providers making State Market Deals on the network.",
+    caption: "Displaying 30-day moving average for State Market Deals data.",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Providers"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "unique_deal_making_providers", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "unique_deal_making_providers", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+    title: "Clients With Active Deals",
+    subtitle: "How many clients have active (State Market) deals on the network at a given time.",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Clients"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "clients_with_active_deals", tip: false, fill: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, {x: "date", y: "clients_with_active_deals", tip: true, stroke: "var(--theme-foreground-focus)"}),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+    title: "Providers With Active Deals",
+    subtitle: "How many providers have active (State Market) deals on the network at a given time.",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Providers"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "providers_with_active_deals", tip: false, fill: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, {x: "date", y: "providers_with_active_deals", tip: true, stroke: "var(--theme-foreground-focus)"}),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+    title: "Providers With Power",
+    subtitle: "How many providers have power on the network at a given time.",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Providers"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "providers_with_power", tip: false, fill: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, {x: "date", y: "providers_with_power", tip: true, stroke: "var(--theme-foreground-focus)"}),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+    title: "Active Addresses",
+    subtitle: "Addresses that appeared on chain at a given time.",
+    caption: "Displaying 30-day moving average on a log scale",
+    width,
+    x: {label: "Date"},
+    y: {grid: true, label: "Active Addresses", type: "log"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "active_address_count_daily", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "active_address_count_daily", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Total Addresses",
+  subtitle: "How many addresses have interacted with the network.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Addresses (Millions)", transform: (d) => d / 1e6},
+  marks: [
+      Plot.ruleY([0]),
+      Plot.areaY(metrics, {x: "date", y: "total_address_count", tip: false, fill: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, {x: "date", y: "total_address_count", tip: true, stroke: "var(--theme-foreground-focus)"}),
+    ]
+  }))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Mean Active Deal Duration",
+  subtitle: "How many days deals active on a date are expected to last.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Mean Active Deal Duration"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.lineY(metrics, {x: "date", y: "mean_deal_duration_days", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+      Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "mean_deal_duration_days", stroke: "var(--theme-foreground-focus)", tip: true})),
+    ]
+  }))
+```
+</div>
+
 </div>
 
 ## Power
 
 <div class="grid grid-cols-2">
-  <div class="card">${
-    resize((width) => Plot.plot({
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
       title: "Raw Power",
       subtitle: "Total raw power (PiBs) capacity on the network over time.",
       width,
@@ -247,24 +292,32 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
         Plot.lineY(metrics, {x: "date", y: "raw_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Raw Power Delta",
-      subtitle: "Daily change in raw power on the network over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "PiBs", domain: [-70, 70]},
+  ```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Raw Power Delta",
+  subtitle: "Daily change in raw power on the network over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "PiBs", domain: [-70, 70]},
       marks: [
         Plot.lineY(metrics, {x: "date", y: "raw_power_delta_pibs", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
         Plot.ruleY([0]),
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "raw_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
       ]
     }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
+  ```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
       title: "Quality Adjusted Power",
       subtitle: "Total quality adjusted power (PiBs) capacity on the network over time.",
       width,
@@ -276,9 +329,13 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
         Plot.lineY(metrics, {x: "date", y: "quality_adjusted_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
+  ```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
       title: "Quality Adjusted Power Delta",
       subtitle: "Daily change in quality adjusted power on the network over time.",
       caption: "Displaying 30-day moving average",
@@ -291,9 +348,13 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
         Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "quality_adjusted_power_delta_pibs", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
       ]
     }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
+  ```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
       title: "Verified Data Power",
       subtitle: "Total verified data power (PiBs) capacity on the network over time.",
       width,
@@ -305,9 +366,13 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
         Plot.lineY(metrics, {x: "date", y: "verified_data_power_pibs", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
-  }</div>
-    <div class="card">${
-    resize((width) => Plot.plot({
+  ```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
       title: "Network Utilization Ratio",
       subtitle: "How much of the network's power is being used.",
       width,
@@ -319,12 +384,15 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
         Plot.lineY(metrics, {x: "date", y: "network_utilization_ratio", tip: true, stroke: "var(--theme-foreground-focus)"}),
       ]
     }))
-  }</div>
+  ```
+</div>
 </div>
 
-<div class="card">${
-  resize((width) => Plot.plot({
-    title: "Direct Data Onboarding",
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Direct Data Onboarding",
     subtitle: "Onboarded data to the network via Direct Data Onboarding.",
     caption: "Displaying 30-day moving average.",
     width,
@@ -336,7 +404,8 @@ const data_flow = ["onboarded_data_pibs", "ended_data_pibs"].flatMap((metric) =>
       Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "ddo_sector_onboarding_raw_power_tibs", stroke: "var(--theme-foreground-focus)", tip: true})),
     ]
   }))
-}</div>
+```
+</div>
 
 ## Sectors
 
@@ -398,304 +467,385 @@ resize((width) => Plot.plot({
 ### Sector Events
 
 <div class="grid grid-cols-2">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Commit Capacity Events",
-      subtitle: "Number of commit capacity events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "commit_capacity_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "commit_capacity_added_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Precommit Events",
-      subtitle: "Number of precommit events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "precommit_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "precommit_added_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Sector Added Events",
-      subtitle: "Number of sector added events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_added_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Sector Extended Events",
-      subtitle: "Number of sector extended events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6, domain: [0, 4]},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_extended_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_extended_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Sector Fault Events",
-      subtitle: "Number of sector fault events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6, domain: [0, 4]},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_faulted_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_faulted_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Sector Recovery Events",
-      subtitle: "Number of sector recovery events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6, domain: [0, 4]},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_recovered_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_recovered_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Sector Snap Events",
-      subtitle: "Number of sector snap events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_snapped_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_snapped_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Sector Terminated Events",
-      subtitle: "Number of sector terminated events per day",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "Events", domain: [0, 950000]},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, {x: "date", y: "sector_terminated_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_terminated_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
-      ]
-    }))
-  }</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Commit Capacity Events",
+  subtitle: "Number of commit capacity events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "commit_capacity_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "commit_capacity_added_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
 </div>
 
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Precommit Events",
+  subtitle: "Number of precommit events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events"},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "precommit_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "precommit_added_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Sector Added Events",
+  subtitle: "Number of sector added events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events"},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "sector_added_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_added_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+  ```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Sector Extended Events",
+  subtitle: "Number of sector extended events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6, domain: [0, 4]},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "sector_extended_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_extended_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Sector Fault Events",
+  subtitle: "Number of sector fault events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6, domain: [0, 4]},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "sector_faulted_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_faulted_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Sector Recovery Events",
+  subtitle: "Number of sector recovery events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events (Millions)", transform: (d) => d / 1e6, domain: [0, 4]},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "sector_recovered_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_recovered_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Sector Snap Events",
+  subtitle: "Number of sector snap events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events"},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "sector_snapped_events_count", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_snapped_events_count", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Sector Terminated Events",
+  subtitle: "Number of sector terminated events per day",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "Events", domain: [0, 950000]},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, {x: "date", y: "sector_terminated_events_count", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "sector_terminated_events_count", stroke: "var(--theme-foreground-focus)", tip: true, clip: true})),
+  ]
+}))
+```
+</div>
+
+</div>
 
 ## Economics
 
 <div class="grid grid-cols-2">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Circulating FIL",
-      subtitle: "Amount of FIL circulating and tradeable in the economy.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "circulating_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "circulating_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Circulating FIL Delta",
-      subtitle: "Daily change in circulating FIL over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL", domain: [0, 1000000]},
-      marks: [
-        Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "circulating_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Mined FIL",
-      subtitle: "Amount of FIL that has been mined by storage miners.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "mined_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "mined_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Mined FIL Delta",
-      subtitle: "Daily change in mined FIL over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL"},
-      marks: [
-        Plot.lineY(metrics, {x: "date", y: "mined_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "mined_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Vested FIL",
-      subtitle: "Amount of FIL that is vested from genesis allocation.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "vested_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "vested_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Vested FIL Delta",
-      subtitle: "Daily change in vested FIL over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL", domain: [0, 1000000]},
-      marks: [
-        Plot.lineY(metrics, {x: "date", y: "vested_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "vested_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Locked FIL",
-      subtitle: "Amount of FIL locked as part of initial pledge, deal pledge, locked rewards, and other locking mechanisms.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "locked_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "locked_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Locked FIL Delta",
-      subtitle: "Daily change in locked FIL over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL", domain: [-400000, 500000]},
-      marks: [
-        Plot.lineY(metrics, {x: "date", y: "locked_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
-        Plot.ruleY([0]),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "locked_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Burnt FIL",
-      subtitle: "Amount of FIL burned as part of on-chain computations and penalties",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "burnt_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "burnt_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Burnt FIL Delta",
-      subtitle: "Daily change in burnt FIL over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL", type: "log"},
-      marks: [
-        Plot.lineY(metrics, {x: "date", y: "burnt_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "burnt_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Reward Per Wincount",
-      subtitle: "Weighted average block rewards awarded by the Filecoin Network per WinCount over time.",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.areaY(metrics, {x: "date", y: "reward_per_wincount", tip: false, fill: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, {x: "date", y: "reward_per_wincount", tip: true, stroke: "var(--theme-foreground-focus)"}),
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Reward per Wincount FIL Delta",
-      subtitle: "Daily change in burnt FIL over time.",
-      caption: "Displaying 30-day moving average",
-      width,
-      x: {label: "Date"},
-      y: {grid: true, label: "FIL"},
-      marks: [
-        Plot.lineY(metrics, {x: "date", y: "reward_per_wincount_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
-        Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "reward_per_wincount_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
-      ]
-    }))
-  }</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Circulating FIL",
+  subtitle: "Amount of FIL circulating and tradeable in the economy.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "circulating_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "circulating_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Circulating FIL Delta",
+  subtitle: "Daily change in circulating FIL over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL", domain: [0, 1000000]},
+  marks: [
+    Plot.lineY(metrics, {x: "date", y: "circulating_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "circulating_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Mined FIL",
+  subtitle: "Amount of FIL that has been mined by storage miners.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "mined_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "mined_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Mined FIL Delta",
+  subtitle: "Daily change in mined FIL over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL"},
+  marks: [
+    Plot.lineY(metrics, {x: "date", y: "mined_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "mined_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Vested FIL",
+  subtitle: "Amount of FIL that is vested from genesis allocation.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "vested_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "vested_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Vested FIL Delta",
+  subtitle: "Daily change in vested FIL over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL", domain: [0, 1000000]},
+  marks: [
+    Plot.lineY(metrics, {x: "date", y: "vested_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "vested_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Locked FIL",
+  subtitle: "Amount of FIL locked as part of initial pledge, deal pledge, locked rewards, and other locking mechanisms.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "locked_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "locked_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Locked FIL Delta",
+  subtitle: "Daily change in locked FIL over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL", domain: [-400000, 500000]},
+  marks: [
+    Plot.lineY(metrics, {x: "date", y: "locked_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)", clip: true}),
+    Plot.ruleY([0]),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "locked_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Burnt FIL",
+  subtitle: "Amount of FIL burned as part of on-chain computations and penalties",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL (Millions)", transform: (d) => d / 1e6},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "burnt_fil", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "burnt_fil", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Burnt FIL Delta",
+  subtitle: "Daily change in burnt FIL over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL", type: "log"},
+  marks: [
+    Plot.lineY(metrics, {x: "date", y: "burnt_fil_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "burnt_fil_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Reward Per Wincount",
+  subtitle: "Weighted average block rewards awarded by the Filecoin Network per WinCount over time.",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL"},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(metrics, {x: "date", y: "reward_per_wincount", tip: false, fill: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, {x: "date", y: "reward_per_wincount", tip: true, stroke: "var(--theme-foreground-focus)"}),
+  ]
+}))
+```
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Reward per Wincount FIL Delta",
+  subtitle: "Daily change in burnt FIL over time.",
+  caption: "Displaying 30-day moving average",
+  width,
+  x: {label: "Date"},
+  y: {grid: true, label: "FIL"},
+  marks: [
+    Plot.lineY(metrics, {x: "date", y: "reward_per_wincount_delta", tip: false, stroke: "var(--theme-foreground-fainter)"}),
+    Plot.lineY(metrics, Plot.windowY(30, {x: "date", y: "reward_per_wincount_delta", stroke: "var(--theme-foreground-focus)", tip: true})),
+  ]
+}))
+```
+</div>
+
 </div>
 
 ## Gas
