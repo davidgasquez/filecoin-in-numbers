@@ -74,6 +74,10 @@ COPY (
     sector_snapped_events_count,
     sector_terminated_events_count,
 
+    -- Retrieval Metrics
+    mean_spark_retrieval_success_rate,
+    providers_with_successful_retrieval,
+
     -- Gas
     total_gas_used_fil,
     provecommit_sector_gas_used_fil,
@@ -90,7 +94,10 @@ COPY (
     github_issue_comment_events,
     github_issue_opened_events,
     github_pull_request_closed_events,
-    github_pull_request_merged_events
+    github_pull_request_merged_events,
+
+    -- Transactions
+    transactions
   FROM read_parquet('https://data.filecoindataportal.xyz/filecoin_daily_metrics.parquet')
 ) TO STDOUT (FORMAT 'CSV');
 EOF

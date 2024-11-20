@@ -14,6 +14,8 @@ The best **high level** view into the Filecoin ecosystem.
 
 ```js
 const am = await FileAttachment("./data/daily_metrics.csv").csv({typed: true});
+const drm = await FileAttachment("./data/daily_region_metrics.csv").csv({typed: true});
+const dim = await FileAttachment("./data/daily_industry_metrics.csv").csv({typed: true});
 ```
 
 ```js
@@ -107,6 +109,78 @@ movingAverageLinePlot({
 ```
 </div>
 
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Data Onboarding by Region",
+  subtitle: "Daily data (TiBs) onboarded by region (from Client's Datacap application).",
+  caption: "Only displaying onboarded data from known regions.",
+  x: {label: "Date"},
+  y: {grid: true, label: "PiBs"},
+  color: {
+    legend: true
+  },
+  width,
+  height: 350,
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(drm.filter(d => d.region != null), Plot.windowY(30, {
+      x: "date",
+      y: "onboarded_data_tibs",
+      stroke: "region",
+      strokeWidth: 2,
+      tip: true
+    })),
+  ]
+}))
+```
+
+</div>
+
+<div class="card">
+
+```js
+resize((width) => Plot.plot({
+  title: "Data Onboarding by Industry",
+  subtitle: "Daily data (TiBs) onboarded by industry (from Client's Datacap application).",
+  caption: "Only displaying onboarded data from known industries.",
+  x: {label: "Date"},
+  y: {grid: true, label: "PiBs"},
+  width,
+  height: 350,
+  color: {
+    legend: true,
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.lineY(dim.filter(d => d.industry != null), Plot.windowY(30, {
+      x: "date",
+      y: "onboarded_data_tibs",
+      stroke: "industry",
+      strokeWidth: 2,
+      tip: true
+    })),
+  ]
+}))
+```
+
+</div>
+
+</div>
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
+  title: "Direct Data Onboarding",
+  subtitle: "Onboarded data to the network via Direct Data Onboarding.",
+  caption: "Displaying 30-day moving average.",
+  yField: "ddo_sector_onboarding_raw_power_tibs",
+  yLabel: "TiBs / day",
+})
+```
 </div>
 
 ## Users
@@ -321,18 +395,36 @@ movingAverageLinePlot({
 </div>
 </div>
 
+## Retrievals
+
+<div class="grid grid-cols-2">
 <div class="card">
 
 ```js
 movingAverageLinePlot({
   metrics,
-  title: "Direct Data Onboarding",
-  subtitle: "Onboarded data to the network via Direct Data Onboarding.",
-  caption: "Displaying 30-day moving average.",
-  yField: "ddo_sector_onboarding_raw_power_tibs",
-  yLabel: "TiBs / day",
+  title: "Spark Retrieval Success Rate",
+  subtitle: "Average success rate of retrievals via Spark over time.",
+  yField: "mean_spark_retrieval_success_rate",
+  yLabel: "Percentage (%)",
+  yTransform: (d) => d * 100,
 })
 ```
+</div>
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
+  title: "Providers With Successful Retrievals",
+  subtitle: "How many providers have successfully retrieved data via Spark over time.",
+  yField: "providers_with_successful_retrieval",
+  yLabel: "Providers",
+})
+```
+
+</div>
 </div>
 
 ## Sectors
@@ -342,6 +434,10 @@ movingAverageLinePlot({
 ```js
 const sectorMetricType = view(Inputs.radio(["Raw Power", "Quality-Adjusted Power"], {label: "Power Type", value: "Raw Power"}));
 ```
+
+</div>
+
+<div class="card">
 
 ```js
 const sector_metrics = sectorMetricType === "Raw Power"
@@ -390,6 +486,37 @@ resize((width) => Plot.plot({
   ]
 }))
 ```
+</div>
+
+<div class="grid grid-cols-2">
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
+  title: "Sector Onboarding",
+  subtitle: `Daily ${sectorMetricType} PiBs onboarded into sector.`,
+  yField: sectorMetricType === "Raw Power" ? "sector_onboarding_raw_power_pibs" : "sector_onboarding_quality_adjusted_power_pibs",
+  yLabel: "PiBs",
+})
+```
+</div>
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
+  title: "Sector Termination",
+  subtitle: `Daily ${sectorMetricType} PiBs terminated from sector.`,
+  yField: sectorMetricType === "Raw Power" ? "sector_terminated_raw_power_pibs" : "sector_terminated_quality_adjusted_power_pibs",
+  yLabel: "PiBs",
+  yDomain: [0, 100]
+})
+```
+</div>
+
 </div>
 
 ### Sector Events
@@ -700,6 +827,25 @@ movingAverageLinePlot({
 })
 ```
 </div>
+
+</div>
+
+
+## Transactions
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
+  title: "Transactions",
+  subtitle: "Number of transactions per day on the network.",
+  yField: "transactions",
+  yLabel: "Transactions (Millions)",
+  yTransform: (d) => d / 1e6,
+  yDomain: [0, 1.7]
+})
+```
 
 </div>
 
