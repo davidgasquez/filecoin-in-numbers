@@ -872,6 +872,34 @@ yLabel: "FIL"
 ```js
 movingAverageLinePlot({
   metrics,
+  title: "Unit Base Fee",
+  subtitle: "The average set price per unit of gas to be burned.",
+  yField: "unit_base_fee",
+  yLabel: "nanoFIL",
+  showArea: true
+})
+```
+</div>
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
+  title: "Unit Base Fee Delta",
+  subtitle: "Daily change in unit base fee over time.",
+  caption: "Displaying 30-day moving average",
+  yField: "unit_base_fee_delta",
+  yLabel: "nanoFIL"
+})
+```
+</div>
+
+<div class="card">
+
+```js
+movingAverageLinePlot({
+  metrics,
   title: "Provecommit Sector Gas Used",
   subtitle: "Total gas used for provecommit sector operations per day on the network.",
   caption: "Displaying 30-day moving average",

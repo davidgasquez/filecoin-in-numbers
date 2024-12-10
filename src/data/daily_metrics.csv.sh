@@ -43,6 +43,8 @@ COPY (
     burnt_fil - lag(burnt_fil) over (order by date) as burnt_fil_delta,
     reward_per_wincount,
     reward_per_wincount - lag(reward_per_wincount) over (order by date) as reward_per_wincount_delta,
+    unit_base_fee,
+    unit_base_fee - lag(unit_base_fee) over (order by date) as unit_base_fee_delta,
 
     -- Sector Metrics
     sector_onboarding_count,
